@@ -44,7 +44,7 @@ class Families:
         for parent in self._parents:
             yield self._parents[parent]
 
-    def family_characteristics(self):
+    def families(self):
         for parent_name in self._parents:
             parent = self._parents[parent_name]
             family = Individual()

@@ -23,5 +23,5 @@ for event in events:
             child = families.individual(event[childfield])
             child.has_characteristics(event)
 
-for parent in families.family_characteristics():
+for parent in families.families():
     print parent.characteristics

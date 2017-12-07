@@ -23,6 +23,10 @@ events = [
     {                           'child': 'H'       , 'name': 'Child of H'          },
     { 'parent': 'parentof_H'  , 'child': 'H'       ,                               },
 
+    # parent has one child, but later child characteristics event has multiple child values
+    { 'parent': 'parentof_I'  , 'child': 'I'       , 'name': 'Parent of I not J'  },
+    {                           'child': ['I', 'J'], 'name': 'Child I and J'      },
+
     # no parent or child
     {                                                'name': 'Unrelated'           },
 ]
@@ -53,12 +57,21 @@ expected_parents = {
         'child' : set(['H']),
         'name'  : set(['Parent of H', 'Child of H']),
     },
+    'parentof_I': {
+        'parent': set(['parentof_I']),
+        'child' : set(['I', 'J']),
+        'name'  : set(['Parent of I not J', 'Child I and J']),
+    },
 }
 
 expected_orphans = {
     'E': {
         'child': set(['E']),
         'name':  set(['Child of NUL']),
+    },
+    'J': {
+        'child': set(['I', 'J']),
+        'name':  set(['Child I and J']),
     },
 }
 
@@ -76,9 +89,10 @@ for family_unit in families.family_units():
     assert( expected_parent == family_unit.characteristics )
 
 assert( len(list(families.orphans())) == len(expected_orphans) )
-for orphan in families.orphans():
-    assert( len(orphan.characteristics['child']) == 1 )
-    orphan_name = orphan.characteristics['child'].copy().pop()
+for orphan_result in families.orphans():
+    orphan_name = orphan_result['name']
+    orphan      = orphan_result['individual']
+
     assert( orphan_name in expected_orphans )
     expected_orphan = expected_orphans[orphan_name]
     assert( expected_orphan == orphan.characteristics )

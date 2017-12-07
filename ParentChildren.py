@@ -33,8 +33,6 @@ class Families:
         self._childfield  = childfield
 
     def process(self, event):
-        individual_name = None
-
         if self._parentfield in event:
             individual_name = event[self._parentfield]
             parent = self.parent_with_name(individual_name)
@@ -45,11 +43,16 @@ class Families:
                 for child in children:
                     self._children.add(child)
                     parent.has_children([child])
+            self.individual_with_name(individual_name).has_characteristics(event)
         elif self._childfield in event:
             individual_name = event[self._childfield]
-
-        if individual_name:
-            self.individual_with_name(individual_name).has_characteristics(event)
+            if isinstance(individual_name, list) or isinstance(individual_name, set):
+                for single_individual_name in individual_name:
+                    single_individual = self.individual_with_name(single_individual_name)
+                    single_individual.has_characteristics(event)
+            else:
+                individual = self.individual_with_name(individual_name)
+                individual.has_characteristics(event)
 
     def individual_with_name(self, individual_name):
         if not individual_name in self._individuals:
@@ -81,4 +84,4 @@ class Families:
         for individual_name in self._individuals:
             if individual_name not in self._children and individual_name not in self._parents:
                 orphan = self._individuals[individual_name]
-                yield orphan
+                yield { 'name': individual_name, 'individual': orphan }

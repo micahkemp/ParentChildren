@@ -78,7 +78,7 @@ class Families:
                 child = self.individual_with_name(child_name)
                 family_unit.has_characteristics(child.characteristics)
             #print "family unit characteristics %s" % family_unit.characteristics
-            yield family_unit
+            yield { 'name': parent_name, 'individual': family_unit }
 
     def orphans(self):
         for individual_name in self._individuals:

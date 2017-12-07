@@ -93,11 +93,11 @@ for event in events:
 
 assert( len(list(families.family_units())) == len(expected_parents) )
 for family_unit in families.family_units():
-    assert( len(family_unit.characteristics['parent']) == 1 )
-    parent_name = family_unit.characteristics['parent'].copy().pop()
+    parent_name = family_unit['name']
+    parent      = family_unit['individual']
     assert( parent_name in expected_parents )
     expected_parent = expected_parents[parent_name]
-    assert( expected_parent == family_unit.characteristics )
+    assert( expected_parent == parent.characteristics )
 
 assert( len(list(families.orphans())) == len(expected_orphans) )
 for orphan_result in families.orphans():

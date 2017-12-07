@@ -24,8 +24,11 @@ events = [
     { 'parent': 'parentof_H'  , 'child': 'H'       ,                               },
 
     # parent has one child, but later child characteristics event has multiple child values
-    { 'parent': 'parentof_I'  , 'child': 'I'       , 'name': 'Parent of I not J'  },
-    {                           'child': ['I', 'J'], 'name': 'Child I and J'      },
+    { 'parent': 'parentof_I'  , 'child': 'I'       , 'name': 'Parent of I not J'   },
+    {                           'child': ['I', 'J'], 'name': 'Child I and J'       },
+
+    # orphan has multiple child values
+    {                           'child': ['K', 'L'], 'name': 'Child K and L'       },
 
     # no parent or child
     {                                                'name': 'Unrelated'           },
@@ -72,6 +75,14 @@ expected_orphans = {
     'J': {
         'child': set(['I', 'J']),
         'name':  set(['Child I and J']),
+    },
+    'K': {
+        'child': set(['K', 'L']),
+        'name':  set(['Child K and L']),
+    },
+    'L': {
+        'child': set(['K', 'L']),
+        'name':  set(['Child K and L']),
     },
 }
 
